@@ -261,6 +261,35 @@
                 opacity: 0;
             }
         }
+
+        /* Language Toggle Button */
+        .language-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            padding: 12px 20px;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .language-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255,255,255,0.2);
+        }
+
+        .language-toggle:active {
+            transform: scale(0.95);
+        }
         
         /* Header */
         .header {
@@ -518,13 +547,10 @@
             margin-bottom: 0.5rem;
         }
 
-        .contact-item {
+        .contact-detail {
             color: rgba(255,255,255,0.95);
             font-size: 1.1rem;
             line-height: 1.6;
-        }
-
-        .contact-detail {
             margin-bottom: 1rem;
         }
 
@@ -535,6 +561,35 @@
             padding-top: 2rem;
             text-shadow: 0 0 8px rgba(255,255,255,0.3);
             font-weight: 500;
+        }
+
+        /* Hide content based on language */
+        .hindi-content {
+            display: none;
+        }
+
+        body.hindi .english-content {
+            display: none;
+        }
+
+        body.hindi .hindi-content {
+            display: block;
+        }
+
+        body.hindi .hindi-content.inline {
+            display: inline;
+        }
+
+        body.hindi .hindi-content.inline-block {
+            display: inline-block;
+        }
+
+        body.hindi .hindi-content.grid {
+            display: grid;
+        }
+
+        body.hindi .hindi-content.flex {
+            display: flex;
         }
 
         /* Responsive */
@@ -565,33 +620,68 @@
             .footer {
                 padding: 3rem 0 1.5rem;
             }
+
+            .language-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Language Toggle Button -->
+    <button class="language-toggle" onclick="toggleLanguage()">
+        <span class="english-content">हिन्दी</span>
+        <span class="hindi-content">English</span>
+    </button>
+
     <div class="universe">
         <div class="earth-container">
-            <div class="earth"></div>
+            <div class="earth">
+                <div class="atmosphere"></div>
+                <div class="terminator"></div>
+                <div class="city-lights"></div>
+            </div>
         </div>
         <div class="overlay"></div>
     </div>
     
     <!-- Header Section -->
     <div class="header">
-        <h1>🪐 Astro-Aditya</h1>
-        <div class="subtitle">A Journey into the Ancient Sciences of the Soul</div>
-        <div class="intro">
-            Since the dawn of civilization, humans have looked to the stars, the palm of their hands, and the energy of their surroundings for guidance. This website brings together five sacred sciences that help align your inner world with the cosmic order. These are not just mystical practices — they are ancient tools for self-discovery, clarity, and healing.
+        <h1>
+            <span class="english-content">🪐 Astro-Aditya</span>
+            <span class="hindi-content">🪐 एस्ट्रो-आदित्य</span>
+        </h1>
+        <div class="subtitle">
+            <span class="english-content">A Journey into the Ancient Sciences of the Soul</span>
+            <span class="hindi-content">आत्मा के प्राचीन विज्ञान की यात्रा</span>
         </div>
-        <a href="#services" class="button">Explore the Universe</a>
+        <div class="intro">
+            <span class="english-content">
+                Since the dawn of civilization, humans have looked to the stars, the palm of their hands, and the energy of their surroundings for guidance. This website brings together five sacred sciences that help align your inner world with the cosmic order. These are not just mystical practices — they are ancient tools for self-discovery, clarity, and healing.
+            </span>
+            <span class="hindi-content">
+                सभ्यता की शुरुआत से ही, मनुष्य ने मार्गदर्शन के लिए तारों, अपने हाथों की हथेलियों और अपने आसपास की ऊर्जा की ओर देखा है। यह वेबसाइट पांच पवित्र विज्ञानों को एक साथ लाती है जो आपकी आंतरिक दुनिया को ब्रह्मांडीय व्यवस्था के साथ संरेखित करने में मदद करते हैं। ये केवल रहस्यमय प्रथाएं नहीं हैं - ये आत्म-खोज, स्पष्टता और उपचार के लिए प्राचीन उपकरण हैं।
+            </span>
+        </div>
+        <a href="#services" class="button">
+            <span class="english-content">Explore the Universe</span>
+            <span class="hindi-content">ब्रह्मांड का अन्वेषण करें</span>
+        </a>
     </div>
     
     <!-- Services Section -->
     <div class="content">
         <div class="container">
-            <h2 class="section-title" id="services">🔮 Our Sacred Sciences</h2>
+            <h2 class="section-title" id="services">
+                <span class="english-content">🔮 Our Sacred Sciences</span>
+                <span class="hindi-content">🔮 हमारे पवित्र विज्ञान</span>
+            </h2>
             
-            <div class="services-grid">
+            <!-- English Services Grid -->
+            <div class="services-grid english-content">
                 <div class="service-card">
                     <span class="service-icon">⭐</span>
                     <h3>Astrology – Discover Your Cosmic Blueprint</h3>
@@ -625,151 +715,229 @@
                 <div class="service-card">
                     <span class="service-icon">🌿</span>
                     <h3>Aura Reading – Decode Your Energy Field</h3>
-                    <p>Your aura is the subtle energy field that surrounds your body — a reflection of your emotional, mental, and spiritual state. Aura reading allows us to understand your vibrational frequency, identify blockages, and guide you toward energetic balance.
+                    <p>Your aura is the subtle energy field that surrounds your body — a reflection of your emotional, mental, and spiritual state. Aura reading allows us to understand your vibrational frequency, identify blockages, and guide you toward energetic balance. Whether you're feeling stuck, anxious, or seeking spiritual growth, aura reading provides insights for healing and transformation.</p>
+                </div>
+            </div>
 
-Whether you're feeling drained, overwhelmed, or simply curious about your energy, an aura scan can offer powerful insights and healing direction.</p>
+            <!-- Hindi Services Grid -->
+            <div class="services-grid hindi-content grid">
+                <div class="service-card">
+                    <span class="service-icon">⭐</span>
+                    <h3>ज्योतिष – अपना ब्रह्मांडीय नक्शा खोजें</h3>
+                    <p>ज्योतिष तारों का प्राचीन विज्ञान है। यह आपके जन्म के समय खगोलीय पिंडों की स्थिति को मैप करता है ताकि आपके व्यक्तित्व, शक्तियों, चुनौतियों और भाग्य का पता चल सके। चाहे आप जीवन के निर्णयों का सामना कर रहे हों या सिर्फ अपनी यात्रा के बारे में उत्सुक हों, एक व्यक्तिगत चार्ट रीडिंग गहरी अंतर्दृष्टि को अनलॉक कर सकती है।</p>
+                </div>
+                
+                <div class="service-card">
+                    <span class="service-icon">🖐️</span>
+                    <h3>हस्तरेखा – आपके हाथों में नक्शा</h3>
+                    <p>आपकी हथेली की हर रेखा एक कहानी कहती है। हस्तरेखा आपके हाथ के आकार, रेखाओं और पर्वतों को पढ़कर आपके चरित्र के लक्षण, पिछले अनुभव और संभावित भविष्य को प्रकट करती है। यह आपकी आत्मा के हस्ताक्षर की तरह है जो आपकी त्वचा में अंकित है।</p>
+                </div>
+                
+                <div class="service-card">
+                    <span class="service-icon">👁️</span>
+                    <h3>मुखाकृति विज्ञान – मन का दर्पण</h3>
+                    <p>आपका चेहरा केवल सुंदरता के लिए नहीं है - यह आपके आंतरिक स्वभाव को दर्शाता है। मुख विज्ञान आपकी चेहरे की संरचना, अभिव्यक्तियों और विशेषताओं का अध्ययन करके आपके व्यक्तित्व, स्वास्थ्य की प्रवृत्तियों और भावनात्मक संतुलन को समझता है।</p>
+                </div>
+                
+                <div class="service-card">
+                    <span class="service-icon">🏠</span>
+                    <h3>वास्तु विशेषज्ञ – अपने स्थान को सामंजस्य में लाएं</h3>
+                    <p>वास्तु शास्त्र वास्तुकला और स्थानीय ऊर्जा का प्राचीन भारतीय विज्ञान है। यह आपके घर या कार्यालय में सकारात्मक ऊर्जा प्रवाह सुनिश्चित करने के लिए कमरों, दरवाजों, वस्तुओं और अधिक के स्थान का मार्गदर्शन करता है। प्रकृति के नियमों के साथ संरेखित करके अपने स्थान में शांति, स्वास्थ्य और समृद्धि लाएं।</p>
+                </div>
+                
+                <div class="service-card">
+                    <span class="service-icon">🧘</span>
+                    <h3>ध्यान – आंतरिक शांति, बाहरी स्पष्टता</h3>
+                    <p>ध्यान स्थिरता का प्रवेश द्वार है। निर्देशित या व्यक्तिगत ध्यान तकनीकों के साथ, आप तनाव कम कर सकते हैं, अपने उच्च स्व से जुड़ सकते हैं, और अपने दैनिक जीवन में शांति को आमंत्रित कर सकते हैं। मानसिक स्पष्टता और भावनात्मक उपचार का अनुभव करें।</p>
+                </div>
+
+                <div class="service-card">
+                    <span class="service-icon">🌿</span>
+                    <h3>आभा पठन – अपना ऊर्जा क्षेत्र डिकोड करें</h3>
+                    <p>आपका आभा आपके शरीर को घेरने वाला सूक्ष्म ऊर्जा क्षेत्र है - आपकी भावनात्मक, मानसिक और आध्यात्मिक स्थिति का प्रतिबिंब। आभा पठन हमें आपकी कंपन आवृत्ति को समझने, रुकावटों की पहचान करने और आपको ऊर्जावान संतुलन की दिशा में मार्गदर्शन करने की अनुमति देता है।</p>
                 </div>
             </div>
             
+            <!-- Why It Matters Section -->
             <div class="why-matters">
-                <h2>📖 Why It Matters</h2>
-                <p>In today's fast-paced world, people feel lost, anxious, or unfulfilled. These ancient sciences act as a spiritual GPS, helping you reconnect with your roots, understand your life patterns, and make empowered choices. Whether you're seeking answers, healing, or a fresh perspective, our services are here to guide you gently toward your truth.</p>
+                <h2>
+                    <span class="english-content">🌟 Why These Sciences Matter</span>
+                    <span class="hindi-content">🌟 ये विज्ञान क्यों महत्वपूर्ण हैं</span>
+                </h2>
+                <p class="english-content">
+                    In our fast-paced modern world, we often feel disconnected from ourselves and the universe around us. These ancient sciences offer a bridge back to that connection. They help you understand not just who you are, but why you're here and how to live in harmony with the natural forces that shape our existence. Whether you seek answers, healing, or simply a deeper understanding of life, these tools have guided humanity for thousands of years.
+                </p>
+                <p class="hindi-content">
+                    हमारी तेज़-तर्रार आधुनिक दुनिया में, हम अक्सर खुद से और अपने चारों ओर के ब्रह्मांड से कटा हुआ महसूस करते हैं। ये प्राचीन विज्ञान उस संबंध वापस करने के लिए एक पुल प्रदान करते हैं। वे आपको न केवल यह समझने में मदद करते हैं कि आप कौन हैं, बल्कि आप यहां क्यों हैं और उन प्राकृतिक शक्तियों के साथ सामंजस्य में कैसे जीना है जो हमारे अस्तित्व को आकार देती हैं।
+                </p>
             </div>
             
+            <!-- Booking Section -->
             <div class="booking-section">
-                <h2>📅 Book Your Appointment</h2>
-                <p>Ready to explore your path with clarity? Book a personal consultation with our expert.</p>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSf8SkTNISH0YgtfGGuIuaclbpstfWj1iqklge54MTs3vC0OsA/viewform?embedded=true" class="button">Click here to book your appointment</a>
+                <h2>
+                    <span class="english-content">🌙 Ready to Begin Your Journey?</span>
+                    <span class="hindi-content">🌙 अपनी यात्रा शुरू करने के लिए तैयार हैं?</span>
+                </h2>
+                <p class="english-content">
+                    Book a personalized consultation today. Whether you choose one service or combine multiple readings, your session will be tailored to your unique needs and questions.
+                </p>
+                <p class="hindi-content">
+                    आज ही एक व्यक्तिगत परामर्श बुक करें। चाहे आप एक सेवा चुनें या कई रीडिंग्स को मिलाएं, आपका सत्र आपकी अनूठी जरूरतों और प्रश्नों के अनुसार तैयार किया जाएगा।
+                </p>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSf8SkTNISH0YgtfGGuIuaclbpstfWj1iqklge54MTs3vC0OsA/viewform?embedded=true" class="button">
+                    <span class="english-content">Book Your Reading</span>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeEYx3gQPSz5fqtChnAnQ70BYZtTi0lzrxFJSEQt7huZ5wXew/viewform?usp=header" class="button">
+                
+                    <span class="hindi-content">अपनी रीडिंग बुक करें</span>
+                </a>
+
+                      </div>
             </div>
         </div>
     </div>
     
     <!-- Footer -->
-    <div class="footer">
+    <div class="footer" id="contact">
         <div class="container">
-           
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <h3>Aditya Sharma</h3>
-                        <strong>Phone:</strong> +91 95494 56344 
-                        <strong>Email:</strong> adityamusic99.as@gmail.com
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h3>
+                        <span class="english-content">📞 Call or Text</span>
+                        <span class="hindi-content">📞 कॉल या टेक्स्ट</span>
+                    </h3>
+                    <div class="contact-detail">
+                        <strong>
+                            <span class="english-content">Primary:</span>
+                            <span class="hindi-content">प्राथमिक:</span>
+                        </strong>
+                        +91 95494 56344
                     </div>
-                    
+                    <div class="contact-detail">
+                        <strong>
+                            <span class="english-content">WhatsApp:</span>
+                            <span class="hindi-content">व्हाट्सऐप:</span>
+                        </strong>
+                        +91 95494 56344
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <h3>
+                        <span class="english-content">✉️ Email</span>
+                        <span class="hindi-content">✉️ ईमेल</span>
+                    </h3>
+                    <div class="contact-detail">
+                        <strong>
+                            <span class="english-content">Consultations:</span>
+                            <span class="hindi-content">परामर्श:</span>
+                        </strong>
+                        astroaditya@gmail.com
+                    </div>
+                    <div class="contact-detail">
+                        <strong>
+                            <span class="english-content">General Info:</span>
+                            <span class="hindi-content">सामान्य जानकारी:</span>
+                        </strong>
+                        adityamusic99.as@gmail.com
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <h3>
+                        <span class="english-content">🌍 Location</span>
+                        <span class="hindi-content">🌍 स्थान</span>
+                    </h3>
+                    <div class="contact-detail">
+                        <strong>
+                            <span class="english-content">City:</span>
+                            <span class="hindi-content">शहर:</span>
+                        </strong>
+                        <span class="english-content">Jaipur, Rajasthan</span>
+                        <span class="hindi-content">जयपुर, राजस्थान</span>
+                    </div>
+                    <div class="contact-detail">
+                        <strong>
+                            <span class="english-content">Sessions:</span>
+                            <span class="hindi-content">सत्र:</span>
+                        </strong>
+                        <span class="english-content">Online & In-Person</span>
+                        <span class="hindi-content">ऑनलाइन और व्यक्तिगत</span>
+                    </div>
                 </div>
             </div>
+            
             <div class="credits">
-                © 2025 Cosmic Voyage - Stellar Visions
+                <span class="english-content">
+                    ✨ May the stars guide your path and the universe bless your journey ✨<br>
+                    © 2025 Astro-Aditya. All rights reserved.
+                </span>
+                <span class="hindi-content">
+                    ✨ तारे आपके मार्ग का मार्गदर्शन करें और ब्रह्मांड आपकी यात्रा को आशीर्वाद दे ✨<br>
+                    © 2025 एस्ट्रो-आदित्य। सभी अधिकार सुरक्षित।
+                </span>
             </div>
         </div>
     </div>
-    
+
     <script>
-        // Create twinkling stars
+        // Create stars
         function createStars() {
             const universe = document.querySelector('.universe');
-            const starCount = 200;
-            
-            for (let i = 0; i < starCount; i++) {
+            for (let i = 0; i < 100; i++) {
                 const star = document.createElement('div');
-                star.classList.add('star');
-                
-                // Random position
-                const top = Math.random() * 100;
-                const left = Math.random() * 100;
-                
-                // Random size
-                const size = Math.random() * 3 + 1;
-                
-                // Random delay for twinkling
-                const delay = Math.random() * 3;
-                
-                star.style.top = `${top}%`;
-                star.style.left = `${left}%`;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                star.style.animationDelay = `${delay}s`;
-                
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
                 universe.appendChild(star);
             }
         }
-        
+
         // Create shooting stars
         function createShootingStars() {
             const universe = document.querySelector('.universe');
-            
-            setInterval(() => {
-                if (Math.random() < 0.3) { // 30% chance every interval
-                    const shootingStar = document.createElement('div');
-                    shootingStar.classList.add('shooting-star');
-                    
-                    // Random starting position
-                    const startY = Math.random() * 50; // Top half of screen
-                    const startX = Math.random() * 50; // Left side
-                    
-                    shootingStar.style.top = `${startY}%`;
-                    shootingStar.style.left = `${startX}%`;
-                    
-                    universe.appendChild(shootingStar);
-                    
-                    // Remove after animation
-                    setTimeout(() => {
-                        shootingStar.remove();
-                    }, 4000);
-                }
-            }, 2000);
+            for (let i = 0; i < 3; i++) {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                shootingStar.style.left = Math.random() * 100 + '%';
+                shootingStar.style.top = Math.random() * 100 + '%';
+                shootingStar.style.animationDelay = Math.random() * 4 + 's';
+                universe.appendChild(shootingStar);
+            }
         }
-        
-        // Initialize the stars
-        document.addEventListener('DOMContentLoaded', () => {
-            createStars();
-            createShootingStars();
-        });
-        
-        // Add subtle parallax effect for Earth and stars
-        document.addEventListener('mousemove', (e) => {
-            const earth = document.querySelector('.earth-container');
-            const universe = document.querySelector('.universe');
-            
-            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-            
-            earth.style.transform = `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px))`;
-            
-            const starMoveX = (e.clientX - window.innerWidth / 2) * 0.005;
-            const starMoveY = (e.clientY - window.innerHeight / 2) * 0.005;
-            
-            universe.style.transform = `translate(${starMoveX}px, ${starMoveY}px)`;
-        });
-        
-        // Smooth scrolling for navigation
+
+        // Language toggle functionality
+        function toggleLanguage() {
+            const body = document.body;
+            body.classList.toggle('hindi');
+        }
+
+        // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
         });
 
-        // Add scroll-based Earth rotation speed
-        let lastScrollY = window.scrollY;
-        
+        // Initialize stars when page loads
+        window.addEventListener('load', () => {
+            createStars();
+            createShootingStars();
+        });
+
+        // Parallax effect for Earth
         window.addEventListener('scroll', () => {
-            const scrollDelta = window.scrollY - lastScrollY;
-            const earth = document.querySelector('.earth');
-            
-            if (earth) {
-                // Adjust rotation speed based on scroll
-                const currentRotation = parseFloat(earth.style.transform?.match(/rotate\(([^)]+)deg\)/)?.[1] || 0);
-                const newRotation = currentRotation + (scrollDelta * 0.1);
-                earth.style.transform = `rotate(${newRotation}deg)`;
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            const earthContainer = document.querySelector('.earth-container');
+            if (earthContainer) {
+                earthContainer.style.transform = `translate(-50%, calc(-50% + ${rate}px))`;
             }
-            
-            lastScrollY = window.scrollY;
         });
     </script>
 </body>
