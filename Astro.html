@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroAditya</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        .universe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 30%, #0f3460 70%, #06142e 100%);
+            z-index: -1;
+        }
+        
+        .earth-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 450px;
+            height: 450px;
+            transform: translate(-50%, -50%);
+            opacity: 0.4;
+            z-index: -1;
+            filter: drop-shadow(0 0 80px rgba(59, 130, 246, 0.4));
+        }
+        
+        .earth {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            animation: earthSpin 25s linear infinite;
+            background: 
+                radial-gradient(circle at 30% 30%, #1e40af, #1e3a8a),
+                conic-gradient(from 0deg, 
+                    #0ea5e9 0deg, 
+                    #22c55e 60deg, 
+                    #0ea5e9 90deg,
+                    #f59e0b 120deg,
+                    #22c55e 180deg,
+                    #0ea5e9 240deg,
+                    #22c55e 280deg,
+                    #0ea5e9 360deg
+                );
+            box-shadow: 
+                inset -30px -30px 80px rgba(0,0,0,0.6),
+                inset 20px 20px 40px rgba(255,255,255,0.1),
+                0 0 120px rgba(59, 130, 246, 0.3),
+                0 0 200px rgba(34, 197, 94, 0.2);
+        }
+        
+        /* Continents Layer */
+        .earth::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background-image: 
+                /* Africa */
+                radial-gradient(ellipse 25px 40px at 45% 35%, rgba(34, 197, 94, 0.9) 30%, transparent 50%),
+                /* Asia */
+                radial-gradient(ellipse 35px 30px at 70% 25%, rgba(34, 197, 94, 0.8) 25%, transparent 45%),
+                /* Europe */
+                radial-gradient(ellipse 15px 20px at 52% 20%, rgba(34, 197, 94, 0.7) 35%, transparent 55%),
+                /* North America */
+                radial-gradient(ellipse 30px 35px at 20% 25%, rgba(34, 197, 94, 0.85) 30%, transparent 50%),
+                /* South America */
+                radial-gradient(ellipse 18px 45px at 25% 50%, rgba(34, 197, 94, 0.8) 25%, transparent 45%),
+                /* Australia */
+                radial-gradient(ellipse 20px 15px at 85% 60%, rgba(34, 197, 94, 0.7) 40%, transparent 60%),
+                /* Additional landmasses */
+                radial-gradient(ellipse 12px 18px at 15% 40%, rgba(34, 197, 94, 0.6) 30%, transparent 50%),
+                radial-gradient(ellipse 8px 12px at 90% 30%, rgba(34, 197, 94, 0.5) 40%, transparent 60%),
+                radial-gradient(ellipse 15px 8px at 75% 15%, rgba(34, 197, 94, 0.6) 35%, transparent 55%);
+            border-radius: 50%;
+            animation: continentMove 50s linear infinite;
+        }
+        
+        /* Clouds Layer */
+        .earth::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 300%;
+            height: 100%;
+            background-image: 
+                /* Cloud formations */
+                radial-gradient(ellipse 40px 15px at 10% 20%, rgba(255,255,255,0.3) 20%, transparent 40%),
+                radial-gradient(ellipse 30px 12px at 25% 35%, rgba(255,255,255,0.25) 25%, transparent 45%),
+                radial-gradient(ellipse 35px 18px at 40% 15%, rgba(255,255,255,0.2) 20%, transparent 40%),
+                radial-gradient(ellipse 25px 10px at 55% 40%, rgba(255,255,255,0.28) 25%, transparent 45%),
+                radial-gradient(ellipse 45px 20px at 70% 25%, rgba(255,255,255,0.22) 20%, transparent 40%),
+                radial-gradient(ellipse 20px 15px at 85% 45%, rgba(255,255,255,0.26) 30%, transparent 50%),
+                radial-gradient(ellipse 38px 16px at 15% 60%, rgba(255,255,255,0.24) 25%, transparent 45%),
+                radial-gradient(ellipse 28px 14px at 45% 70%, rgba(255,255,255,0.27) 20%, transparent 40%),
+                radial-gradient(ellipse 32px 12px at 75% 65%, rgba(255,255,255,0.23) 25%, transparent 45%),
+                radial-gradient(ellipse 22px 18px at 90% 80%, rgba(255,255,255,0.25) 30%, transparent 50%);
+            border-radius: 50%;
+            animation: cloudDrift 35s linear infinite;
+        }
+        
+        /* Atmosphere Glow */
+        .atmosphere {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: calc(100% + 20px);
+            height: calc(100% + 20px);
+            border-radius: 50%;
+            background: radial-gradient(circle, transparent 85%, rgba(135, 206, 235, 0.4) 90%, rgba(135, 206, 235, 0.8) 95%, transparent 100%);
+            animation: atmosphereGlow 8s ease-in-out infinite alternate;
+        }
+        
+        /* Day/Night Terminator */
+        .terminator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(120deg, 
+                transparent 0%, 
+                transparent 30%, 
+                rgba(0,0,0,0.1) 40%,
+                rgba(0,0,0,0.4) 50%, 
+                rgba(0,0,0,0.7) 60%,
+                rgba(0,0,0,0.9) 70%,
+                rgba(0,0,0,0.95) 80%,
+                transparent 100%
+            );
+            animation: dayNightCycle 40s linear infinite;
+        }
+        
+        /* City Lights */
+        .city-lights {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-image: 
+                radial-gradient(1px 1px at 30% 40%, #ffff00 50%, transparent 70%),
+                radial-gradient(1px 1px at 45% 35%, #ffaa00 50%, transparent 70%),
+                radial-gradient(1px 1px at 60% 25%, #ffff88 50%, transparent 70%),
+                radial-gradient(1px 1px at 25% 50%, #ffddaa 50%, transparent 70%),
+                radial-gradient(1px 1px at 70% 45%, #ffffff 50%, transparent 70%),
+                radial-gradient(1px 1px at 80% 60%, #ffff66 50%, transparent 70%),
+                radial-gradient(1px 1px at 20% 70%, #ffaa88 50%, transparent 70%),
+                radial-gradient(1px 1px at 85% 30%, #ffdd00 50%, transparent 70%);
+            opacity: 0;
+            animation: cityLightsFlicker 40s linear infinite;
+        }
+        
+        @keyframes earthSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes continentMove {
+            0% { transform: translateX(0px); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        @keyframes cloudDrift {
+            0% { transform: translateX(0px) translateY(0px); }
+            25% { transform: translateX(-10px) translateY(2px); }
+            50% { transform: translateX(-20px) translateY(-1px); }
+            75% { transform: translateX(-30px) translateY(1px); }
+            100% { transform: translateX(-33.33%) translateY(0px); }
+        }
+        
+        @keyframes atmosphereGlow {
+            0% { 
+                filter: brightness(1) saturate(1);
+                transform: scale(1);
+            }
+            100% { 
+                filter: brightness(1.2) saturate(1.3);
+                transform: scale(1.02);
+            }
+        }
+        
+        @keyframes dayNightCycle {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes cityLightsFlicker {
+            0% { opacity: 0; }
+            25% { opacity: 0.8; }
+            50% { opacity: 0; }
+            75% { opacity: 0.6; }
+            100% { opacity: 0; }
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 100%);
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+        
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(45deg, #ffffff, #87ceeb);
+            border-radius: 50%;
+            animation: shoot 4s linear infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes shoot {
+            0% {
+                transform: translateX(-100px) translateY(100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(800px) translateY(-800px);
+                opacity: 0;
+            }
+        }
+        
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .header h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(135, 206, 235, 0.5);
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .header .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(255,255,255,0.6);
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+        
+        .header .intro {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-bottom: 3rem;
+            text-shadow: 0 0 8px rgba(0,0,0,0.8);
+            line-height: 1.6;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .button {
+            padding: 1rem 2rem;
+            background-color: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            animation: fadeInUp 1s ease-out 0.9s both;
+            backdrop-filter: blur(10px);
+        }
+        
+        .button:hover {
+            background-color: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+        
+        /* Content Sections */
+        .content {
+            position: relative;
+            z-index: 10;
+            background: rgba(6, 20, 46, 0.85);
+            backdrop-filter: blur(15px);
+            color: white;
+            padding: 4rem 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            text-shadow: 0 0 15px rgba(255,255,255,0.6);
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .service-card {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(255,255,255,0.5);
+        }
+        
+        .service-card p {
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 1rem;
+        }
+        
+        .why-matters {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 4rem 0;
+            text-align: center;
+        }
+        
+        .why-matters h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(255,255,255,0.6);
+        }
+        
+        .why-matters p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .booking-section {
+            text-align: center;
+            margin: 4rem 0;
+        }
+        
+        .booking-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(255,255,255,0.6);
+        }
+        
+        .booking-section p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(6, 20, 46, 0.95);
+            padding: 4rem 0 2rem;
+            text-align: center;
+            border-top: 2px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(2px 2px at 20% 30%, #fff, transparent),
+                radial-gradient(2px 2px at 40% 70%, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 90% 40%, #fff, transparent),
+                radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.6), transparent),
+                radial-gradient(2px 2px at 80% 10%, #fff, transparent),
+                radial-gradient(1px 1px at 10% 80%, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1px 1px at 30% 20%, #fff, transparent),
+                radial-gradient(2px 2px at 70% 80%, rgba(255,255,255,0.9), transparent);
+            background-size: 200px 200px, 300px 300px, 150px 150px, 250px 250px, 180px 180px, 220px 220px, 160px 160px, 280px 280px;
+            animation: starfield 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes starfield {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-200px); }
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+            justify-items: center;
+        }
+
+        .contact-item {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            min-width: 280px;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 15px 40px rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .contact-item h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255,255,255,0.8);
+            background: linear-gradient(45deg, #ffffff, #a8d8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .contact-item strong {
+            color: #87ceeb;
+            text-shadow: 0 0 8px rgba(135, 206, 235, 0.6);
+            font-size: 1rem;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item {
+            color: rgba(255,255,255,0.95);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .contact-detail {
+            margin-bottom: 1rem;
+        }
+
+        .credits {
+            color: rgba(255,255,255,0.8);
+            font-size: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 2rem;
+            text-shadow: 0 0 8px rgba(255,255,255,0.3);
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .earth-container {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .contact-info {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .contact-item {
+                min-width: auto;
+                padding: 2rem 1.5rem;
+            }
+            
+            .contact-item h3 {
+                font-size: 1.5rem;
+            }
+            
+            .footer {
+                padding: 3rem 0 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="universe">
+        <div class="earth-container">
+            <div class="earth"></div>
+        </div>
+        <div class="overlay"></div>
+    </div>
+    
+    <!-- Header Section -->
+    <div class="header">
+        <h1>🪐 Astro-Aditya</h1>
+        <div class="subtitle">A Journey into the Ancient Sciences of the Soul</div>
+        <div class="intro">
+            Since the dawn of civilization, humans have looked to the stars, the palm of their hands, and the energy of their surroundings for guidance. This website brings together five sacred sciences that help align your inner world with the cosmic order. These are not just mystical practices — they are ancient tools for self-discovery, clarity, and healing.
+        </div>
+        <a href="#services" class="button">Explore the Universe</a>
+    </div>
+    
+    <!-- Services Section -->
+    <div class="content">
+        <div class="container">
+            <h2 class="section-title" id="services">🔮 Our Sacred Sciences</h2>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <span class="service-icon">⭐</span>
+                    <h3>Astrology – Discover Your Cosmic Blueprint</h3>
+                    <p>Astrology is the ancient science of the stars. It maps the position of celestial bodies at your time of birth to reveal your personality, strengths, challenges, and destiny. Whether you're facing life decisions or just curious about your journey, a personal chart reading can unlock deep insights.</p>
+                </div>
+                
+                <div class="service-card">
+                    <span class="service-icon">🖐️</span>
+                    <h3>Palmistry – The Map in Your Hands</h3>
+                    <p>Every line on your palm tells a story. Palmistry, or chiromancy, reads the shape, lines, and mounts of your hand to reveal traits of your character, past experiences, and possible future. It's like your soul's signature etched into your skin.</p>
+                </div>
+                
+                <div class="service-card">
+                    <span class="service-icon">👁️</span>
+                    <h3>Face Reading – The Mirror of the Mind</h3>
+                    <p>Your face is not just for beauty — it reflects your inner nature. Face reading (physiognomy) studies your facial structure, expressions, and features to understand your personality, health tendencies, and emotional balance.</p>
+                </div>
+                
+                <div class="service-card">
+                    <span class="service-icon">🏠</span>
+                    <h3>Vastu Expert – Harmonize Your Space</h3>
+                    <p>Vastu Shastra is the ancient Indian science of architecture and spatial energy. It guides the placement of rooms, doors, objects, and more to ensure positive energy flow in your home or office. Bring peace, health, and prosperity into your space by aligning with nature's laws.</p>
+                </div>
+                
+                <div class="service-card">
+                    <span class="service-icon">🧘</span>
+                    <h3>Meditation – Inner Peace, Outer Clarity</h3>
+                    <p>Meditation is the gateway to stillness. With guided or personalized meditation techniques, you can reduce stress, connect with your higher self, and invite calm into your daily life. Experience mental clarity and emotional healing.</p>
+                </div>
+
+                <div class="service-card">
+                    <span class="service-icon">🌿</span>
+                    <h3>Aura Reading – Decode Your Energy Field</h3>
+                    <p>Your aura is the subtle energy field that surrounds your body — a reflection of your emotional, mental, and spiritual state. Aura reading allows us to understand your vibrational frequency, identify blockages, and guide you toward energetic balance.
+
+Whether you're feeling drained, overwhelmed, or simply curious about your energy, an aura scan can offer powerful insights and healing direction.</p>
+                </div>
+            </div>
+            
+            <div class="why-matters">
+                <h2>📖 Why It Matters</h2>
+                <p>In today's fast-paced world, people feel lost, anxious, or unfulfilled. These ancient sciences act as a spiritual GPS, helping you reconnect with your roots, understand your life patterns, and make empowered choices. Whether you're seeking answers, healing, or a fresh perspective, our services are here to guide you gently toward your truth.</p>
+            </div>
+            
+            <div class="booking-section">
+                <h2>📅 Book Your Appointment</h2>
+                <p>Ready to explore your path with clarity? Book a personal consultation with our expert.</p>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSf8SkTNISH0YgtfGGuIuaclbpstfWj1iqklge54MTs3vC0OsA/viewform?embedded=true" class="button">Click here to book your appointment</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+           
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <h3>Aditya Sharma</h3>
+                        <strong>Phone:</strong> +91 95494 56344 
+                        <strong>Email:</strong> adityamusic99.as@gmail.com
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="credits">
+                © 2025 Cosmic Voyage - Stellar Visions
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Create twinkling stars
+        function createStars() {
+            const universe = document.querySelector('.universe');
+            const starCount = 200;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random position
+                const top = Math.random() * 100;
+                const left = Math.random() * 100;
+                
+                // Random size
+                const size = Math.random() * 3 + 1;
+                
+                // Random delay for twinkling
+                const delay = Math.random() * 3;
+                
+                star.style.top = `${top}%`;
+                star.style.left = `${left}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.animationDelay = `${delay}s`;
+                
+                universe.appendChild(star);
+            }
+        }
+        
+        // Create shooting stars
+        function createShootingStars() {
+            const universe = document.querySelector('.universe');
+            
+            setInterval(() => {
+                if (Math.random() < 0.3) { // 30% chance every interval
+                    const shootingStar = document.createElement('div');
+                    shootingStar.classList.add('shooting-star');
+                    
+                    // Random starting position
+                    const startY = Math.random() * 50; // Top half of screen
+                    const startX = Math.random() * 50; // Left side
+                    
+                    shootingStar.style.top = `${startY}%`;
+                    shootingStar.style.left = `${startX}%`;
+                    
+                    universe.appendChild(shootingStar);
+                    
+                    // Remove after animation
+                    setTimeout(() => {
+                        shootingStar.remove();
+                    }, 4000);
+                }
+            }, 2000);
+        }
+        
+        // Initialize the stars
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            createShootingStars();
+        });
+        
+        // Add subtle parallax effect for Earth and stars
+        document.addEventListener('mousemove', (e) => {
+            const earth = document.querySelector('.earth-container');
+            const universe = document.querySelector('.universe');
+            
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            
+            earth.style.transform = `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px))`;
+            
+            const starMoveX = (e.clientX - window.innerWidth / 2) * 0.005;
+            const starMoveY = (e.clientY - window.innerHeight / 2) * 0.005;
+            
+            universe.style.transform = `translate(${starMoveX}px, ${starMoveY}px)`;
+        });
+        
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll-based Earth rotation speed
+        let lastScrollY = window.scrollY;
+        
+        window.addEventListener('scroll', () => {
+            const scrollDelta = window.scrollY - lastScrollY;
+            const earth = document.querySelector('.earth');
+            
+            if (earth) {
+                // Adjust rotation speed based on scroll
+                const currentRotation = parseFloat(earth.style.transform?.match(/rotate\(([^)]+)deg\)/)?.[1] || 0);
+                const newRotation = currentRotation + (scrollDelta * 0.1);
+                earth.style.transform = `rotate(${newRotation}deg)`;
+            }
+            
+            lastScrollY = window.scrollY;
+        });
+    </script>
+</body>
+</html>
